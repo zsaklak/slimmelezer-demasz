@@ -91,7 +91,8 @@ Eredmény: SIKERES
 - Az automatikus GitHub-küldés alapértelmezetten kikapcsolt, és csak `Issues: write` tokennel engedélyezhető.
 - GitHub Actions: Python, ESPHome, hassfest és HACS munkafolyamat elkészítve.
 - Helyi hassfest: sikeres.
-- HACS Action GitHub-futás: még nem hajtható végre, amíg nincs nyilvános repository.
+- A nyilvános repository első javított GitHub-futásában a Python/Home
+  Assistant, ESPHome, hassfest és HACS feladat is sikeres.
 - Home Assistant Brands-bejegyzés: még nincs.
 - GitHub Release: még nincs.
 

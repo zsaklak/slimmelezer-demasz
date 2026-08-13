@@ -39,8 +39,8 @@ Az automatikus GitHub-küldés nem HACS-telepítési feltétel és alapértelmez
 ## Emberi kapuk
 
 1. Nyílt forráskódú licenc kiválasztása és jóváhagyása. **Teljesítve: MIT.**
-2. A GitHub repository létrehozása és a `main` ág publikálása.
-3. A GitHub Actions első sikeres futása.
+2. A GitHub repository létrehozása és a `main` ág publikálása. **Teljesítve.**
+3. A GitHub Actions első sikeres futása. **Teljesítve.**
 4. Kézi telepítés egy teszt Home Assistant-példányra. **Teljesítve.**
 5. Legalább 24 órás élő próba.
 6. Home Assistant Brands-bejegyzés.

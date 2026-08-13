@@ -16,14 +16,14 @@
 
 ## GitHub-beállítások
 
-- [ ] Nyilvános `zsaklak/slimmelezer-demasz` repository
-- [ ] Repository-leírás beállítva
-- [ ] Témakörök beállítva
-- [ ] Issues engedélyezve
-- [ ] Alapértelmezett ág: `main`
+- [x] Nyilvános `zsaklak/slimmelezer-demasz` repository
+- [x] Repository-leírás beállítva
+- [x] Témakörök beállítva
+- [x] Issues engedélyezve
+- [x] Alapértelmezett ág: `main`
 - [ ] Ágvédelem és kötelező CI-ellenőrzések
-- [ ] HACS Action sikeres
-- [ ] hassfest sikeres
+- [x] HACS Action sikeres
+- [x] hassfest sikeres
 
 ## Kiadás és HACS
 
