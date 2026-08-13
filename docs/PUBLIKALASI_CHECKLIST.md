@@ -21,7 +21,7 @@
 - [x] Témakörök beállítva
 - [x] Issues engedélyezve
 - [x] Alapértelmezett ág: `main`
-- [ ] Ágvédelem és kötelező CI-ellenőrzések
+- [x] Ágvédelem és kötelező CI-ellenőrzések
 - [x] HACS Action sikeres
 - [x] hassfest sikeres
 
