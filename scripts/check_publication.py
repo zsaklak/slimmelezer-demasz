@@ -31,6 +31,7 @@ REQUIRED_FILES = {
     "hacs.json",
     "custom_components/slimmelezer_demasz/manifest.json",
     "custom_components/slimmelezer_demasz/config_flow.py",
+    "custom_components/slimmelezer_demasz/brand/icon.png",
     "custom_components/slimmelezer_demasz/reporting.py",
     "custom_components/slimmelezer_demasz/strings.json",
     "custom_components/slimmelezer_demasz/translations/hu.json",

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="SlimmeLezer Démász">
+  <rect width="256" height="256" rx="52" fill="#0b6aa2"/>
+  <rect x="45" y="34" width="132" height="188" rx="24" fill="none" stroke="#fff" stroke-width="15"/>
+  <rect x="71" y="62" width="80" height="48" rx="9" fill="#fff" opacity="0.96"/>
+  <circle cx="82" cy="185" r="10" fill="#fff"/>
+  <circle cx="111" cy="185" r="10" fill="#fff"/>
+  <path d="M174 98h28v26h20v28h-20v26h-28v-26h-20v-28h20z" fill="#f9d648" stroke="#fff" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M124 119 94 158h25l-10 36 36-49h-25z" fill="#f9d648" stroke="#0b6aa2" stroke-width="5" stroke-linejoin="round"/>
+</svg>

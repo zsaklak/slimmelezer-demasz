@@ -26,6 +26,7 @@ Az automatikus GitHub-küldés nem HACS-telepítési feltétel és alapértelmez
 - nyilvános GitHub repository, leírás, témakörök és engedélyezett Issues;
 - sikeres HACS Action és hassfest;
 - saját Home Assistant Brands-bejegyzés;
+- legalább a repositoryba csomagolt `brand/icon.png` arculati elem;
 - teljes GitHub Release, nem csak címke.
 
 ## Tervezett GitHub-metaadatok

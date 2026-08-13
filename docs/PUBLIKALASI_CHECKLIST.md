@@ -11,6 +11,7 @@
 - [x] Parser- és Home Assistant-tesztek
 - [x] Választható import/export teljesítményforrások és előjeles nettó szenzor
 - [x] Adatvédelmi publikációs ellenőrzés
+- [x] HACS-kompatibilis helyi brand ikon
 - [x] Jóváhagyott nyílt forráskódú licenc: MIT
 
 ## GitHub-beállítások

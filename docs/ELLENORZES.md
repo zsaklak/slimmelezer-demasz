@@ -65,7 +65,7 @@ Eredmény: SIKERES
 - Hassfest: sikeres, `Integrations: 1`, `Invalid integrations: 0`.
 - GitHub Actions `actionlint`: sikeres, hiba nélkül.
 - Dokumentációs relatív hivatkozások: 17/17 érvényes.
-- Helyi publikációs szerkezetellenőrzés: sikeres, 14 kötelező fájllal.
+- Helyi publikációs szerkezetellenőrzés: sikeres, 15 kötelező fájllal.
 
 ## Izolált Home Assistant élő próba
 
