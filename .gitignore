@@ -1,0 +1,20 @@
+# Titkok és helyi ESPHome-állományok
+esphome/secrets.yaml
+esphome/.esphome/
+esphome/build/
+build/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+
+# Operációs rendszer és szerkesztők
+.DS_Store
+.idea/
+.vscode/
+*~

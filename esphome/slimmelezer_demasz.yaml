@@ -1,0 +1,486 @@
+---
+substitutions:
+  device_name: slimmelezer
+  friendly_name: "SlimmeLezer Démász"
+
+esphome:
+  name: ${device_name}
+  friendly_name: ${friendly_name}
+  name_add_mac_suffix: false
+  project:
+    name: zsaklak.slimmelezer_demasz
+    version: "1.0.0"
+
+  # NINCS HASZNÁLATBAN: a Démász P1 telegram nincs titkosítva.
+  # Az eredeti generikus SlimmeLezer konfiguráció on_boot decryption-key
+  # visszatöltése ezért szándékosan nincs engedélyezve.
+  # on_boot:
+  #   then:
+  #     - if:
+  #         condition:
+  #           lambda: return id(has_key);
+  #         then:
+  #           - lambda: |-
+  #               std::string key(id(stored_decryption_key), 32);
+  #               id(dsmr_instance).set_decryption_key(key);
+  #         else:
+  #           - logger.log:
+  #               level: info
+  #               format: "A DSMR titkosítás nincs használatban."
+
+esp8266:
+  board: d1_mini
+  restore_from_flash: true
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: ${device_name}
+  # A P1 port korlátozott tápellátása miatt.
+  output_power: 14dB
+
+captive_portal:
+
+logger:
+  # A hardveres UART maradjon szabad a D7/GPIO13 P1 vételhez.
+  baud_rate: 0
+
+api:
+  # NINCS HASZNÁLATBAN: titkosítatlan telegramhoz nem kell set_dsmr_key
+  # szolgáltatás. A teljes eredeti api.services blokk ezért ki van kapcsolva.
+  # services:
+  #   service: set_dsmr_key
+  #   variables:
+  #     private_key: string
+  #   then:
+  #     - logger.log:
+  #         format: "DSMR privát kulcs beállítása"
+  #     - globals.set:
+  #         id: has_key
+  #         value: !lambda "return private_key.length() == 32;"
+  #     - lambda: |-
+  #         if (private_key.length() == 32)
+  #           private_key.copy(id(stored_decryption_key), 32);
+  #         id(dsmr_instance).set_decryption_key(private_key);
+
+# NINCS HASZNÁLATBAN: a kész, mérőspecifikus konfigurációt nem írhatja felül
+# a Zuidwijk általános dashboard-importja.
+# dashboard_import:
+#   package_import_url: github://zuidwijk/dsmr/slimmelezer.yaml@main
+#   import_full_config: true
+
+ota:
+  - platform: esphome
+
+web_server:
+  port: 80
+  version: "3"
+  # A Raw DSMR Telegram ne kerüljön HA-entitásállapotba, de a helyi
+  # /text_sensor/raw_dsmr_telegram REST-végponton legyen elérhető.
+  include_internal: true
+
+uart:
+  baud_rate: 115200
+  rx_pin: D7
+  rx_buffer_size: 1700
+
+dsmr:
+  id: dsmr_instance
+  max_telegram_length: 1700
+  # NINCS HASZNÁLATBAN: a Démász telegram titkosítatlan.
+  # decryption_key: !secret decryption_key
+
+# NINCS HASZNÁLATBAN: csak a titkosítási kulcs tárolásához kellettek.
+# globals:
+#   - id: has_key
+#     type: bool
+#     restore_value: true
+#     initial_value: "false"
+#   - id: stored_decryption_key
+#     type: char[32]
+#     restore_value: true
+
+sensor:
+  # Ezeket a diagnosztikai szenzorokat a korábbi SlimmeLezer-konfiguráció is
+  # publikálta. A nevük szándékosan változatlan, így egy következő firmware-
+  # telepítés után a történeti Home Assistant-entitások újra felélednek.
+  - platform: uptime
+    name: "SlimmeLezer Uptime"
+    update_interval: 60s
+    entity_category: diagnostic
+
+  - platform: wifi_signal
+    name: "SlimmeLezer Wi-Fi Signal"
+    update_interval: 60s
+    entity_category: diagnostic
+
+  - platform: dsmr
+    # Az élő SAG5SAG-METER telegramban megfigyelt, az ESPHome által
+    # szabványosan támogatott numerikus mezők.
+    energy_delivered_lux:
+      name: "Hatásos import energia összesen"
+    energy_delivered_tariff1:
+      name: "Hatásos import energia tarifa 1"
+    energy_delivered_tariff2:
+      name: "Hatásos import energia tarifa 2"
+    energy_delivered_tariff3:
+      name: "Hatásos import energia tarifa 3"
+    energy_delivered_tariff4:
+      name: "Hatásos import energia tarifa 4"
+
+    energy_returned_lux:
+      name: "Hatásos export energia összesen"
+    energy_returned_tariff1:
+      name: "Hatásos export energia tarifa 1"
+    energy_returned_tariff2:
+      name: "Hatásos export energia tarifa 2"
+    energy_returned_tariff3:
+      name: "Hatásos export energia tarifa 3"
+    energy_returned_tariff4:
+      name: "Hatásos export energia tarifa 4"
+
+    total_imported_energy:
+      name: "Meddő import energia összesen"
+    total_exported_energy:
+      name: "Meddő export energia összesen"
+
+    power_delivered:
+      name: "Pillanatnyi aktív import teljesítmény"
+    power_returned:
+      name: "Pillanatnyi aktív export teljesítmény"
+
+    electricity_threshold:
+      name: "Limiter határérték"
+
+    voltage_l1:
+      name: "Feszültség L1"
+    voltage_l2:
+      name: "Feszültség L2"
+    voltage_l3:
+      name: "Feszültség L3"
+
+    current_l1:
+      name: "Áramerősség L1"
+    current_l2:
+      name: "Áramerősség L2"
+    current_l3:
+      name: "Áramerősség L3"
+
+    current_fuse_l1:
+      name: "Biztosító áramhatár L1"
+    current_fuse_l2:
+      name: "Biztosító áramhatár L2"
+    current_fuse_l3:
+      name: "Biztosító áramhatár L3"
+
+    power_delivered_l1:
+      name: "Aktív import teljesítmény L1"
+    power_delivered_l2:
+      name: "Aktív import teljesítmény L2"
+    power_delivered_l3:
+      name: "Aktív import teljesítmény L3"
+
+    power_returned_l1:
+      name: "Aktív export teljesítmény L1"
+    power_returned_l2:
+      name: "Aktív export teljesítmény L2"
+    power_returned_l3:
+      name: "Aktív export teljesítmény L3"
+
+    power_factor:
+      name: "Teljesítménytényező összesen"
+    power_factor_l1:
+      name: "Teljesítménytényező L1"
+    power_factor_l2:
+      name: "Teljesítménytényező L2"
+    power_factor_l3:
+      name: "Teljesítménytényező L3"
+
+    # NINCS AZ AKTUÁLIS TELEGRAMBAN, ezért szándékosan kikapcsolva:
+    # frequency:
+    #   name: "Hálózati frekvencia"
+
+    # A MÉRŐ MÁSIK OBIS-KÓDOKAT KÜLD, ezért szándékosan kikapcsolva:
+    # reactive_power_delivered:  # ESPHome: 1-0:3.7.0; mérő: 5.7.0–8.7.0
+    #   name: "Pillanatnyi meddő import teljesítmény"
+    # reactive_power_returned:   # ESPHome: 1-0:4.7.0; mérő: 5.7.0–8.7.0
+    #   name: "Pillanatnyi meddő export teljesítmény"
+
+    # INKOMPATIBILIS MAGYAR FORMÁTUM, bekapcsolva parserhibát okoz:
+    # active_energy_import_maximum_demand_last_13_months:
+    #   name: "Havi maximumigények – 0-0:98.1.0"
+
+    # ------------------------------------------------------------------
+    # KIKAPCSOLT GENERIKUS DSMR-SZENZOROK
+    # Az alábbi teljes lista megmarad referenciaként. Egyik OBIS-kód sem
+    # szerepelt a vizsgált /SAG5SAG-METER telegramban.
+    # ------------------------------------------------------------------
+
+    # NINCS ADAT: meddőenergia tarifa szerinti bontás (3.8.1–4, 4.8.1–4).
+    # reactive_energy_delivered_tariff1:
+    #   name: "Meddő import energia tarifa 1"
+    # reactive_energy_delivered_tariff2:
+    #   name: "Meddő import energia tarifa 2"
+    # reactive_energy_delivered_tariff3:
+    #   name: "Meddő import energia tarifa 3"
+    # reactive_energy_delivered_tariff4:
+    #   name: "Meddő import energia tarifa 4"
+    # reactive_energy_returned_tariff1:
+    #   name: "Meddő export energia tarifa 1"
+    # reactive_energy_returned_tariff2:
+    #   name: "Meddő export energia tarifa 2"
+    # reactive_energy_returned_tariff3:
+    #   name: "Meddő export energia tarifa 3"
+    # reactive_energy_returned_tariff4:
+    #   name: "Meddő export energia tarifa 4"
+
+    # NEM EHHEZ A MÉRŐHÖZ: svájci (1-1:*) és izraeli (*.8.11–13) mezők.
+    # energy_delivered_tariff1_ch:
+    #   name: "Aktív import energia T1 (CH)"
+    # energy_delivered_tariff2_ch:
+    #   name: "Aktív import energia T2 (CH)"
+    # energy_returned_tariff1_ch:
+    #   name: "Aktív export energia T1 (CH)"
+    # energy_returned_tariff2_ch:
+    #   name: "Aktív export energia T2 (CH)"
+    # energy_delivered_tariff1_il:
+    #   name: "Aktív import energia T1 (IL)"
+    # energy_delivered_tariff2_il:
+    #   name: "Aktív import energia T2 (IL)"
+    # energy_delivered_tariff3_il:
+    #   name: "Aktív import energia T3 (IL)"
+    # energy_returned_tariff1_il:
+    #   name: "Aktív export energia T1 (IL)"
+    # energy_returned_tariff2_il:
+    #   name: "Aktív export energia T2 (IL)"
+    # energy_returned_tariff3_il:
+    #   name: "Aktív export energia T3 (IL)"
+    # power_delivered_ch:
+    #   name: "Aktív import teljesítmény (CH)"
+    # power_returned_ch:
+    #   name: "Aktív export teljesítmény (CH)"
+
+    # NINCS ADAT: kimaradási, feszültségesési és feszültségemelkedési naplók.
+    # electricity_failures:
+    #   name: "Áramkimaradások száma"
+    # electricity_long_failures:
+    #   name: "Hosszú áramkimaradások száma"
+    # electricity_sags_l1:
+    #   name: "Feszültségesések L1"
+    # voltage_sag_time_l1:
+    #   name: "Feszültségesés ideje L1"
+    # voltage_sag_l1:
+    #   name: "Feszültségesés L1"
+    # electricity_sags_l2:
+    #   name: "Feszültségesések L2"
+    # voltage_sag_time_l2:
+    #   name: "Feszültségesés ideje L2"
+    # voltage_sag_l2:
+    #   name: "Feszültségesés L2"
+    # electricity_sags_l3:
+    #   name: "Feszültségesések L3"
+    # voltage_sag_time_l3:
+    #   name: "Feszültségesés ideje L3"
+    # voltage_sag_l3:
+    #   name: "Feszültségesés L3"
+    # electricity_swells_l1:
+    #   name: "Feszültségemelkedések L1"
+    # voltage_swell_time_l1:
+    #   name: "Feszültségemelkedés ideje L1"
+    # voltage_swell_l1:
+    #   name: "Feszültségemelkedés L1"
+    # electricity_swells_l2:
+    #   name: "Feszültségemelkedések L2"
+    # voltage_swell_time_l2:
+    #   name: "Feszültségemelkedés ideje L2"
+    # voltage_swell_l2:
+    #   name: "Feszültségemelkedés L2"
+    # electricity_swells_l3:
+    #   name: "Feszültségemelkedések L3"
+    # voltage_swell_time_l3:
+    #   name: "Feszültségemelkedés ideje L3"
+    # voltage_swell_l3:
+    #   name: "Feszültségemelkedés L3"
+
+    # NINCS ADAT: átlag-/összesített feszültség, abszolút teljesítmény,
+    # nullavezető és összesített áram.
+    # voltage_avg_l1:
+    #   name: "Átlagfeszültség L1"
+    # voltage_avg_l2:
+    #   name: "Átlagfeszültség L2"
+    # voltage_avg_l3:
+    #   name: "Átlagfeszültség L3"
+    # voltage:
+    #   name: "Feszültség összesen"
+    # abs_power:
+    #   name: "Abszolút aktív pillanatnyi teljesítmény"
+    # current:
+    #   name: "Áramerősség összesen"
+    # current_n:
+    #   name: "Nullavezető áramerőssége"
+    # current_sum:
+    #   name: "Áramerősségek összege"
+
+    # NINCS ADAT: fázisonkénti 23/24, 43/44, 63/64 meddő teljesítmény.
+    # reactive_power_delivered_l1:
+    #   name: "Meddő import teljesítmény L1"
+    # reactive_power_delivered_l2:
+    #   name: "Meddő import teljesítmény L2"
+    # reactive_power_delivered_l3:
+    #   name: "Meddő import teljesítmény L3"
+    # reactive_power_returned_l1:
+    #   name: "Meddő export teljesítmény L1"
+    # reactive_power_returned_l2:
+    #   name: "Meddő export teljesítmény L2"
+    # reactive_power_returned_l3:
+    #   name: "Meddő export teljesítmény L3"
+
+    # NINCS ADAT: látszólagos teljesítmények (9.7, 10.7 és fázisai).
+    # apparent_delivery_power:
+    #   name: "Látszólagos import teljesítmény"
+    # apparent_delivery_power_l1:
+    #   name: "Látszólagos import teljesítmény L1"
+    # apparent_delivery_power_l2:
+    #   name: "Látszólagos import teljesítmény L2"
+    # apparent_delivery_power_l3:
+    #   name: "Látszólagos import teljesítmény L3"
+    # apparent_return_power:
+    #   name: "Látszólagos export teljesítmény"
+    # apparent_return_power_l1:
+    #   name: "Látszólagos export teljesítmény L1"
+    # apparent_return_power_l2:
+    #   name: "Látszólagos export teljesítmény L2"
+    # apparent_return_power_l3:
+    #   name: "Látszólagos export teljesítmény L3"
+
+    # NINCS ADAT: negyedórás igény-/demand-regiszterek és belga mezők.
+    # active_demand_power:
+    #   name: "Aktív átlagigény"
+    # active_demand_net:
+    #   name: "Nettó aktív átlagigény"
+    # active_demand_abs:
+    #   name: "Abszolút aktív átlagigény"
+    # active_energy_import_current_average_demand:
+    #   name: "Aktuális aktív import átlagigény"
+    # active_energy_export_current_average_demand:
+    #   name: "Aktuális aktív export átlagigény"
+    # reactive_energy_import_current_average_demand:
+    #   name: "Aktuális meddő import átlagigény"
+    # reactive_energy_export_current_average_demand:
+    #   name: "Aktuális meddő export átlagigény"
+    # apparent_energy_import_current_average_demand:
+    #   name: "Aktuális látszólagos import átlagigény"
+    # apparent_energy_export_current_average_demand:
+    #   name: "Aktuális látszólagos export átlagigény"
+    # active_energy_import_last_completed_demand:
+    #   name: "Utolsó aktív import átlagigény"
+    # active_energy_export_last_completed_demand:
+    #   name: "Utolsó aktív export átlagigény"
+    # reactive_energy_import_last_completed_demand:
+    #   name: "Utolsó meddő import átlagigény"
+    # reactive_energy_export_last_completed_demand:
+    #   name: "Utolsó meddő export átlagigény"
+    # apparent_energy_import_last_completed_demand:
+    #   name: "Utolsó látszólagos import átlagigény"
+    # apparent_energy_export_last_completed_demand:
+    #   name: "Utolsó látszólagos export átlagigény"
+    # active_energy_import_maximum_demand_running_month:
+    #   name: "Futó havi aktív import maximumigény"
+
+    # NINCS M-BUS ADAT: gáz-, hő-, víz- és almérő-funkciók.
+    # gas_device_type:
+    #   name: "Gázmérő típusa"
+    # gas_valve_position:
+    #   name: "Gázszelep állapota"
+    # gas_delivered:
+    #   name: "Gázfogyasztás"
+    # gas_delivered_gj:
+    #   name: "Gázfogyasztás GJ"
+    # gas_delivered_be:
+    #   name: "Gázfogyasztás (BE)"
+    # thermal_device_type:
+    #   name: "Hőmennyiségmérő típusa"
+    # thermal_valve_position:
+    #   name: "Hőszelep állapota"
+    # thermal_delivered:
+    #   name: "Hőenergia"
+    # water_device_type:
+    #   name: "Vízmérő típusa"
+    # water_valve_position:
+    #   name: "Vízszelep állapota"
+    # water_delivered:
+    #   name: "Vízfogyasztás"
+    # sub_device_type:
+    #   name: "Almérő típusa"
+    # sub_valve_position:
+    #   name: "Almérőszelep állapota"
+    # sub_delivered:
+    #   name: "Almérő mennyisége"
+
+    # NINCS ADAT: minimum teljesítménytényező és mintavételi periódus.
+    # min_power_factor:
+    #   name: "Minimum teljesítménytényező"
+    # period_3_for_instantaneous_values:
+    #   name: "Pillanatnyi értékek periódusa"
+
+text_sensor:
+  - platform: dsmr
+    identification:
+      name: "DSMR azonosító"
+    timestamp:
+      name: "Mérő időbélyeg"
+    electricity_tariff:
+      name: "Aktuális tarifa"
+    electricity_switch_position:
+      name: "Megszakító állapota"
+    # Az üres 0-0:96.13.0() is érvényes hosszú üzenet.
+    message_long:
+      name: "Áramszolgáltatói hosszú üzenet"
+
+    # Az ESPHome equipment_id mezője 0-0:96.1.1-et vár, de a vizsgált mérő
+    # 0-0:96.1.0-t küld. Ezt a dinamikus HA-integráció dolgozza fel.
+    # equipment_id:
+    #   name: "Mérő gyári száma"
+
+    # NEM EHHEZ A TELEGRAMHOZ / NINCS ADAT: az eredeti generikus
+    # szövegszenzorok teljes kikapcsolt listája.
+    # p1_version:
+    #   name: "DSMR-verzió"
+    # p1_version_be:
+    #   name: "DSMR-verzió (BE)"
+    # electricity_tariff_il:
+    #   name: "Aktuális tarifa (IL)"
+    # electricity_failure_log_il:
+    #   name: "Kimaradási napló (IL)"
+    # electricity_failure_log:
+    #   name: "Kimaradási napló"
+    # message_short:
+    #   name: "Áramszolgáltatói rövid üzenet"
+    # sub_equipment_id:
+    #   name: "Almérő azonosítója"
+    # fw_core_version:
+    #   name: "Mérő core firmware-verzió"
+    # fw_core_checksum:
+    #   name: "Mérő core firmware-ellenőrzőösszeg"
+    # fw_module_version:
+    #   name: "Mérő modul firmware-verzió"
+    # fw_module_checksum:
+    #   name: "Mérő modul firmware-ellenőrzőösszeg"
+
+    telegram:
+      id: raw_dsmr_telegram
+      name: "Raw DSMR Telegram"
+      internal: true
+
+  - platform: wifi_info
+    ip_address:
+      name: "SlimmeLezer IP-cím"
+    ssid:
+      name: "SlimmeLezer Wi-Fi SSID"
+    bssid:
+      name: "SlimmeLezer Wi-Fi BSSID"
+
+  - platform: version
+    name: "ESPHome-verzió"
+    hide_timestamp: true

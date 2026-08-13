@@ -1,0 +1,64 @@
+name: Új OBIS-regiszter
+description: Automatikusan felismert regiszter adatvédelmileg tisztított ellenőrzése
+title: "[Új OBIS]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Az űrlapot a SlimmeLezer Démász integráció előre kitöltheti. Ne adj hozzá mérési értéket, mérőazonosítót, belső URL-t vagy IP-címet.
+  - type: input
+    id: obis
+    attributes:
+      label: OBIS-kód
+    validations:
+      required: true
+  - type: input
+    id: groups
+    attributes:
+      label: Értékcsoportok száma
+    validations:
+      required: true
+  - type: input
+    id: units
+    attributes:
+      label: Mértékegységek
+    validations:
+      required: true
+  - type: input
+    id: value_types
+    attributes:
+      label: Értéktípusok
+    validations:
+      required: true
+  - type: input
+    id: device_classes
+    attributes:
+      label: Kikövetkeztetett eszközosztályok
+  - type: input
+    id: state_classes
+    attributes:
+      label: Kikövetkeztetett állapotosztályok
+  - type: input
+    id: header
+    attributes:
+      label: Telegramfejléc
+    validations:
+      required: true
+  - type: input
+    id: fingerprint
+    attributes:
+      label: Szerkezeti ujjlenyomat
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Kiegészítő megjegyzés
+      description: Mérési értéket vagy azonosítót ne adj meg.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Adatvédelem
+      options:
+        - label: Ellenőriztem, hogy a jelentés nem tartalmaz mérési értéket, mérőazonosítót, belső URL-t vagy IP-címet.
+          required: true

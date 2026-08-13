@@ -1,0 +1,35 @@
+name: Hibajelentés
+description: SlimmeLezer Démász integrációs vagy parserhiba jelentése
+title: "[Hiba]: "
+labels: ["hiba"]
+body:
+  - type: input
+    id: ha_version
+    attributes:
+      label: Home Assistant-verzió
+    validations:
+      required: true
+  - type: input
+    id: esphome_version
+    attributes:
+      label: ESPHome-verzió
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: A hiba leírása és reprodukciója
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Adatvédelmileg tisztított naplórészlet
+      render: text
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Adatvédelem
+      options:
+        - label: Eltávolítottam a tokeneket, IP-címeket, mérőazonosítókat és mérési értékeket.
+          required: true

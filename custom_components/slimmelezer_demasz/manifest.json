@@ -1,0 +1,12 @@
+{
+  "domain": "slimmelezer_demasz",
+  "name": "SlimmeLezer Démász",
+  "codeowners": ["@zsaklak"],
+  "config_flow": true,
+  "documentation": "https://github.com/zsaklak/slimmelezer-demasz",
+  "integration_type": "device",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/zsaklak/slimmelezer-demasz/issues",
+  "requirements": [],
+  "version": "1.0.0"
+}

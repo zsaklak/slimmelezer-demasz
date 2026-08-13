@@ -1,0 +1,54 @@
+{
+  "title": "SlimmeLezer Démász",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up SlimmeLezer Démász",
+        "description": "Configure the internal Raw DSMR Telegram web endpoint. The integration polls once every 10 seconds and automatically adds newly observed OBIS registers.",
+        "data": {
+          "resource_url": "Raw DSMR Telegram URL",
+          "scan_interval": "Polling interval (seconds)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "The endpoint is unavailable or did not return a valid Démász DSMR telegram.",
+      "invalid_url": "Enter a valid HTTP or HTTPS URL without credentials, query parameters, or a fragment."
+    },
+    "abort": {
+      "already_configured": "This SlimmeLezer is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Power sources and unknown OBIS reporting",
+        "description": "Optionally select separate import and export power sensors. The integration creates a signed net power sensor as import minus export. Leave both empty to disable it. The default manual OBIS mode creates a Home Assistant repair and a prefilled GitHub issue form. Token status: {token_status}.",
+        "data": {
+          "github_auto_report": "Automatically create a privacy-safe GitHub issue",
+          "github_token": "Fine-grained GitHub token (leave empty to retain the saved token)",
+          "power_import_entity": "Import power entity",
+          "power_export_entity": "Export power entity"
+        },
+        "data_description": {
+          "github_auto_report": "When disabled, only a local Repair and a prefilled issue form are created.",
+          "github_token": "The token is stored in Home Assistant's private configuration and is excluded from diagnostics.",
+          "power_import_entity": "A positive instantaneous power sensor representing consumption/import.",
+          "power_export_entity": "A positive instantaneous power sensor representing production/export; it is subtracted from import."
+        }
+      }
+    },
+    "error": {
+      "token_required": "A token is required for automatic GitHub reporting.",
+      "power_pair_required": "Select both import and export power entities, or leave both empty.",
+      "power_entities_must_differ": "Import and export must use different entities.",
+      "invalid_power_entity": "Select an available sensor with the power device class."
+    }
+  },
+  "issues": {
+    "new_obis": {
+      "title": "New OBIS register detected: {obis}",
+      "description": "SlimmeLezer found the undocumented `{obis}` register with {group_count} value group(s). The Learn more link opens a privacy-safe prefilled GitHub report. Verify the manufacturer and meter model before submission."
+    }
+  }
+}

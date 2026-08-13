@@ -1,0 +1,54 @@
+name: Mérőkompatibilitási jelentés
+description: Új MVM-terület vagy mérőtípus adatvédelmileg tisztított ellenőrzése
+title: "[Kompatibilitás]: "
+labels: ["kompatibilitás"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ne adj meg mérőazonosítót, gyári számot, Wi-Fi-adatot, belső IP-címet vagy teljes raw telegramot.
+  - type: input
+    id: area
+    attributes:
+      label: MVM-terület vagy korábbi elosztó
+      placeholder: Például volt Démász terület
+    validations:
+      required: true
+  - type: input
+    id: meter
+    attributes:
+      label: Mérő gyártója és pontos típusa
+    validations:
+      required: true
+  - type: input
+    id: header
+    attributes:
+      label: Telegramfejléc
+      placeholder: /SAG5SAG-METER
+    validations:
+      required: true
+  - type: textarea
+    id: obis
+    attributes:
+      label: OBIS-kódok értékek nélkül
+      description: Csak a kódokat add meg, a zárójeles értékeket ne.
+    validations:
+      required: true
+  - type: input
+    id: profile
+    attributes:
+      label: A 0-0:98.1.0 csoportszáma és egységsorrendje
+      placeholder: 20; időbélyeg, kWh..., kvarh..., kW...
+  - type: textarea
+    id: result
+    attributes:
+      label: ESPHome- és Home Assistant-tapasztalat
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Adatvédelem
+      options:
+        - label: Ellenőriztem, hogy a jelentés nem tartalmaz mérési értéket vagy személyes azonosítót.
+          required: true

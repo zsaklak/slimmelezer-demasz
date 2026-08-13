@@ -1,0 +1,54 @@
+{
+  "title": "SlimmeLezer Démász",
+  "config": {
+    "step": {
+      "user": {
+        "title": "SlimmeLezer Démász beállítása",
+        "description": "A belső Raw DSMR Telegram webes végpont beállítása. Az integráció 10 másodpercenként egy kéréssel olvassa az adatokat, és automatikusan felveszi az új OBIS-regisztereket.",
+        "data": {
+          "resource_url": "Raw DSMR Telegram URL",
+          "scan_interval": "Lekérdezési időköz (másodperc)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "A végpont nem érhető el, vagy nem érvényes Démász DSMR telegramot adott.",
+      "invalid_url": "Adj meg érvényes HTTP- vagy HTTPS-URL-t hitelesítési adatok, query paraméter és fragmentum nélkül."
+    },
+    "abort": {
+      "already_configured": "Ez a SlimmeLezer már be van állítva."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Teljesítményforrások és ismeretlen OBIS-regiszterek",
+        "description": "Opcionálisan válassz külön import- és exportteljesítmény-szenzort. Az integráció import mínusz export képlettel előjeles nettó teljesítményszenzort készít. Kikapcsoláshoz hagyd mindkettőt üresen. Az alapértelmezett kézi OBIS-mód Home Assistant-javítást és előre kitöltött GitHub issue-formot készít. Token állapota: {token_status}.",
+        "data": {
+          "github_auto_report": "Adatvédelmileg tisztított GitHub issue automatikus létrehozása",
+          "github_token": "Finomhangolt GitHub-token (üresen hagyva a mentett token marad)",
+          "power_import_entity": "Importteljesítmény entitása",
+          "power_export_entity": "Exportteljesítmény entitása"
+        },
+        "data_description": {
+          "github_auto_report": "Kikapcsolva csak helyi Javítás és előre kitöltött issue-form készül.",
+          "github_token": "A token a Home Assistant privát konfigurációjában tárolódik, és nem kerül a diagnosztikába.",
+          "power_import_entity": "A fogyasztást/importot pozitív pillanatnyi teljesítménnyel jelző szenzor.",
+          "power_export_entity": "A termelést/exportot pozitív pillanatnyi teljesítménnyel jelző szenzor; ezt vonjuk ki az importból."
+        }
+      }
+    },
+    "error": {
+      "token_required": "Az automatikus GitHub-jelentéshez token szükséges.",
+      "power_pair_required": "Válaszd ki az import- és az exportteljesítmény entitását is, vagy hagyd mindkettőt üresen.",
+      "power_entities_must_differ": "Az import és az export nem lehet ugyanaz az entitás.",
+      "invalid_power_entity": "Elérhető, power eszközosztályú szenzort válassz."
+    }
+  },
+  "issues": {
+    "new_obis": {
+      "title": "Új OBIS-regiszter jelent meg: {obis}",
+      "description": "A SlimmeLezer egy eddig nem dokumentált `{obis}` regisztert talált {group_count} értékcsoporttal. A További információ hivatkozás adatvédelmileg tisztított, előre kitöltött GitHub-jelentést nyit. Beküldés előtt ellenőrizd a gyártót és a mérőtípust."
+    }
+  }
+}
