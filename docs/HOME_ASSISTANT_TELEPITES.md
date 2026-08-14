@@ -39,6 +39,26 @@ Szabályok:
 Az opció mentése csak az integrációt tölti újra, teljes Home Assistant
 Core-újraindítás nem szükséges.
 
+## Átmeneti Raw DSMR-végponthibák
+
+Minden frissítési ciklus legfeljebb két HTTP-kísérletet végez, a kettő között
+0,25 másodperc várakozással. Ha mindkettő sikertelen, az integráció legfeljebb
+két egymást követő frissítési cikluson át az utolsó jó adatot tartja elérhető
+állapotban. A harmadik sikertelen ciklustól a koordinátorhoz tartozó entitások
+`unavailable` állapotúak lesznek. Egy 10 másodperces lekérdezési időköznél ez
+nagyjából 20 másodperces türelmi időt jelent a két ciklusban végzett
+újrapróbálkozások futási idején felül.
+
+A Home Assistant naplója a `http_timeout`, `http`, `json`, `payload` vagy
+`telegram` hibafázist és a kivétel típusát közli. A diagnosztikai letöltésben
+az alábbi, mérési értéket nem tartalmazó mezők segítik a hibakeresést:
+
+- `using_stale_data`;
+- `consecutive_failed_refreshes`;
+- `total_failed_refreshes`;
+- `stale_refreshes`;
+- `last_failure_stage` és `last_failure_type`.
+
 ## Telepítés
 
 Másold ezt a teljes könyvtárat:

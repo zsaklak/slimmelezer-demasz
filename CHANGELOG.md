@@ -1,5 +1,16 @@
 # Változásnapló
 
+## 1.0.1 – végponti hibák tolerálása
+
+- Egy rövid Raw DSMR-lekérési hiba után egyszeri, 0,25 másodperces azonnali
+  újrapróbálkozás.
+- Az utolsó jó adatok megtartása legfeljebb két egymást követő sikertelen
+  frissítési ciklusban.
+- Tartós hiba jelzése a harmadik sikertelen ciklustól `unavailable`
+  állapottal.
+- Adatvédelmileg biztonságos hibafázis- és kivételtípus-naplózás.
+- Új diagnosztikai számlálók a sikertelen és gyorsítótárazott frissítésekhez.
+
 ## 1.0.0 – kiadásra előkészítve
 
 - Volt Démász területi Sagem MA309M ESPHome-minta.

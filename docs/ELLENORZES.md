@@ -2,6 +2,30 @@
 
 Dátum: 2026-08-11, Europe/Budapest
 
+## 1.0.1 végponti hibatűrés – helyi ellenőrzés
+
+Dátum: 2026-08-14, Europe/Budapest
+
+A 24 órás élő próba részállapotában három különálló, egyperces Raw
+DSMR-végponti időtúllépés jelent meg. A Home Assistant és a két külső
+teljesítményforrás közben elérhető maradt; a koordinátorhoz kötött entitások
+egy sikertelen frissítéstől átmenetileg `unavailable` állapotúak lettek.
+
+Az 1.0.1 változat helyi ellenőrzésének eredménye:
+
+- egyszeri azonnali HTTP-újrapróbálkozás: sikeres teszt;
+- két egymást követő hibás ciklusban az utolsó jó adat megtartása: sikeres
+  teszt;
+- harmadik hibás ciklustól a hiba továbbadása: sikeres teszt;
+- sikeres lekérés után a hibasorozat és a gyorsítótárazott állapot törlése:
+  sikeres teszt;
+- teljes Python/Home Assistant tesztkészlet: 16/16 sikeres;
+- Ruff kód- és formázásellenőrzés: sikeres.
+
+A módosított változat ebben az ellenőrzési lépésben még nem került az élő
+Home Assistant rendszerre, ezért az éles újrapróbálkozási viselkedés külön
+telepítési és újraindítási kapu után igazolható.
+
 ## Élő Raw DSMR Telegram
 
 A csak olvasási ellenőrzés egy volt Démász területi Sagem MA309M mérő SlimmeLezer végpontján futott. A nyilvános jegyzőkönyv nem tartalmaz belső IP-címet, mérési értéket, COSEM-azonosítót vagy mérőazonosítót.
