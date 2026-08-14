@@ -1,6 +1,6 @@
 [project]
 name = "slimmelezer-demasz"
-version = "1.0.0"
+version = "1.0.1"
 description = "Home Assistant és ESPHome támogatás volt Démász területi MVM Sagem MA309M okosmérőkhöz"
 requires-python = ">=3.14.2"
 dependencies = []

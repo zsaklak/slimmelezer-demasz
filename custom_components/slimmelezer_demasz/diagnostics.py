@@ -19,6 +19,12 @@ async def async_get_config_entry_diagnostics(
     data = coordinator.data
     return {
         "update_success": coordinator.last_update_success,
+        "using_stale_data": coordinator.using_stale_data,
+        "consecutive_failed_refreshes": coordinator.consecutive_failed_refreshes,
+        "total_failed_refreshes": coordinator.total_failed_refreshes,
+        "stale_refreshes": coordinator.stale_refreshes,
+        "last_failure_stage": coordinator.last_failure_stage,
+        "last_failure_type": coordinator.last_failure_type,
         "telegram_header": data.header,
         "telegram_length": data.telegram_length,
         "observed_obis_count": len(data.obis_codes),

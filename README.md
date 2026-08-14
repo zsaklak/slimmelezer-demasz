@@ -26,6 +26,21 @@ A csomag két egymásra épülő részből áll:
 - új egy- vagy többértékes OBIS-regiszterek automatikus entitásfelvétele;
 - egyetlen koordinált HTTP-kérés 10 másodpercenként.
 
+### Átmeneti végponthibák kezelése
+
+Az integráció egy sikertelen Raw DSMR-lekérés után 0,25 másodperccel egyszer
+azonnal újrapróbálkozik. Ha mindkét kísérlet sikertelen, az első két egymást
+követő frissítési ciklusban megtartja az utolsó jó adatot, így egy rövid
+Wi-Fi-, mDNS- vagy ESPHome-webszerver-késés nem teszi azonnal elérhetetlenné az
+összes koordinált entitást. A harmadik egymást követő sikertelen ciklustól az
+entitások `unavailable` állapotba kerülnek, hogy tartós hibánál ne maradjon
+észrevétlenül régi adat a felületen.
+
+A napló a hiba fázisát és kivételtípusát is rögzíti, de nem írja ki a raw
+telegramot vagy annak mérési értékeit. A letölthető diagnosztika tartalmazza az
+egymást követő és összes hibás frissítés, valamint az utolsó jó adattal
+kiszolgált frissítések számát.
+
 A részletes megfeleltetés az [OBIS-mátrixban](docs/OBIS_MATRIX.md) található.
 
 ### Hálózati nettó teljesítmény

@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import json
+from unittest.mock import AsyncMock, patch
 
+import pytest
 import voluptuous_serialize
 from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.config_entries import ConfigEntryState
@@ -12,6 +14,7 @@ from homeassistant.data_entry_flow import FlowResultType
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import issue_registry as ir
+from homeassistant.helpers.update_coordinator import UpdateFailed
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.slimmelezer_demasz.const import (
@@ -24,6 +27,11 @@ from custom_components.slimmelezer_demasz.const import (
     DOMAIN,
     EVENT_NEW_OBIS,
     GITHUB_ISSUES_API_URL,
+)
+from custom_components.slimmelezer_demasz.coordinator import (
+    SlimmeLezerCoordinator,
+    TelegramFetchError,
+    async_fetch_telegram,
 )
 from custom_components.slimmelezer_demasz.parser import parse_telegram
 from custom_components.slimmelezer_demasz.reporting import repair_issue_id
@@ -58,6 +66,83 @@ def telegram(*extra_lines: str) -> str:
         *extra_lines,
     ]
     return "/SAG5SAG-METER\r\n\r\n" + "\r\n".join(lines) + "\r\n!ABCD\r\n"
+
+
+async def test_fetch_retries_one_transient_failure(hass) -> None:
+    """Retry one failed endpoint request before failing the refresh."""
+    expected = parse_telegram(telegram())
+    failure = TelegramFetchError("http_timeout", "TimeoutError", "teszt időtúllépés")
+    with (
+        patch(
+            "custom_components.slimmelezer_demasz.coordinator."
+            "_async_fetch_telegram_once",
+            new=AsyncMock(side_effect=[failure, expected]),
+        ) as fetch,
+        patch(
+            "custom_components.slimmelezer_demasz.coordinator.asyncio.sleep",
+            new=AsyncMock(),
+        ) as sleep,
+    ):
+        result = await async_fetch_telegram(hass, URL)
+
+    assert result is expected
+    assert fetch.await_count == 2
+    sleep.assert_awaited_once()
+
+
+async def test_coordinator_keeps_last_good_data_for_two_failed_refreshes(
+    hass,
+) -> None:
+    """Keep entities available for two failed refreshes, then surface failure."""
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        data={CONF_RESOURCE_URL: URL, CONF_SCAN_INTERVAL: 10},
+    )
+    coordinator = SlimmeLezerCoordinator(hass, entry)
+    expected = parse_telegram(telegram())
+    coordinator.async_set_updated_data(expected)
+    failure = TelegramFetchError("http_timeout", "TimeoutError", "teszt időtúllépés")
+
+    with patch(
+        "custom_components.slimmelezer_demasz.coordinator.async_fetch_telegram",
+        new=AsyncMock(side_effect=[failure, failure, failure]),
+    ):
+        assert await coordinator._async_update_data() is expected
+        assert await coordinator._async_update_data() is expected
+        with pytest.raises(UpdateFailed):
+            await coordinator._async_update_data()
+
+    assert coordinator.consecutive_failed_refreshes == 3
+    assert coordinator.total_failed_refreshes == 3
+    assert coordinator.stale_refreshes == 2
+    assert not coordinator.using_stale_data
+    assert coordinator.last_failure_stage == "http_timeout"
+    assert coordinator.last_failure_type == "TimeoutError"
+
+
+async def test_coordinator_resets_stale_state_after_recovery(hass) -> None:
+    """Clear the consecutive-failure state after a successful refresh."""
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        data={CONF_RESOURCE_URL: URL, CONF_SCAN_INTERVAL: 10},
+    )
+    coordinator = SlimmeLezerCoordinator(hass, entry)
+    expected = parse_telegram(telegram())
+    coordinator.async_set_updated_data(expected)
+    failure = TelegramFetchError("http", "ClientError", "teszt HTTP-hiba")
+
+    with patch(
+        "custom_components.slimmelezer_demasz.coordinator.async_fetch_telegram",
+        new=AsyncMock(side_effect=[failure, expected]),
+    ):
+        assert await coordinator._async_update_data() is expected
+        assert coordinator.using_stale_data
+        assert await coordinator._async_update_data() is expected
+
+    assert coordinator.consecutive_failed_refreshes == 0
+    assert coordinator.total_failed_refreshes == 1
+    assert coordinator.stale_refreshes == 1
+    assert not coordinator.using_stale_data
 
 
 async def test_config_flow_validates_the_raw_endpoint(hass, aioclient_mock) -> None:
