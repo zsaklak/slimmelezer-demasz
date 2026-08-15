@@ -50,10 +50,11 @@ projekthez nem készül külön Brands PR.
 4. Kézi telepítés egy teszt Home Assistant-példányra. **Teljesítve.**
 5. Legalább 24 órás élő próba. **Teljesítve: 86411 másodperc, 1432/1432 hibamentes minta.**
 6. Custom-integration brand ikon. **Teljesítve; külön Brands PR már nem fogadott.**
-7. `v1.0.1` GitHub Release.
-8. Először HACS egyedi repositoryként végzett telepítési próba.
-9. Csak ezután PR a HACS alapértelmezett repository-listájába.
+7. `v1.0.1` GitHub Release. **Teljesítve.**
+8. Először HACS egyedi repositoryként végzett telepítési próba. **Teljesítve a Zsáklak Home Assistant rendszeren.**
+9. Csak ezután PR a HACS alapértelmezett repository-listájába. **Beadva: [hacs/default#10011](https://github.com/hacs/default/pull/10011); karbantartói elbírálásra vár.**
 
-A forráskód, tesztek, dokumentáció, CI-konfiguráció, kézi telepítés és a
-24 órás élő próba elkészült. A kiadás, az egyedi repository-próba és a
-HACS-alaplista PR külön, külső visszaolvasással ellenőrzött lépés.
+A forráskód, tesztek, dokumentáció, CI-konfiguráció, kézi telepítés, a
+24 órás élő próba, a GitHub Release és a HACS egyedi repository-próba
+elkészült. A HACS-alaplista felvételi kérelmének összevonása külső
+karbantartói human gate.

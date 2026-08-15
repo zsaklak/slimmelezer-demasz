@@ -30,6 +30,7 @@
 - [x] Kézi telepítési próba
 - [x] 24 órás élő teszt: 86411 másodperc, 1432/1432 hibamentes minta
 - [x] Helyi custom-integration brand ikon; külön Brands PR 2026.3 óta nem fogadott
-- [ ] `v1.0.1` GitHub Release
-- [ ] HACS egyedi repository telepítési próba
-- [ ] HACS alapértelmezett repository PR
+- [x] [`v1.0.1` GitHub Release](https://github.com/zsaklak/slimmelezer-demasz/releases/tag/v1.0.1)
+- [x] HACS egyedi repository telepítési próba a Zsáklak Home Assistant rendszeren
+- [x] [HACS alapértelmezett repository PR beadva](https://github.com/hacs/default/pull/10011)
+- [ ] HACS alapértelmezett repository PR karbantartói összevonása
