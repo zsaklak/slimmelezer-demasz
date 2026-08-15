@@ -28,8 +28,8 @@
 ## Kiadás és HACS
 
 - [x] Kézi telepítési próba
-- [ ] 24 órás élő teszt
-- [ ] Brands-bejegyzés
-- [ ] `v1.0.0` GitHub Release
+- [x] 24 órás élő teszt: 86411 másodperc, 1432/1432 hibamentes minta
+- [x] Helyi custom-integration brand ikon; külön Brands PR 2026.3 óta nem fogadott
+- [ ] `v1.0.1` GitHub Release
 - [ ] HACS egyedi repository telepítési próba
 - [ ] HACS alapértelmezett repository PR

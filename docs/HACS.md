@@ -25,16 +25,22 @@ Az automatikus GitHub-küldés nem HACS-telepítési feltétel és alapértelmez
 - `hacs.json` fájlban `country: HU`;
 - nyilvános GitHub repository, leírás, témakörök és engedélyezett Issues;
 - sikeres HACS Action és hassfest;
-- saját Home Assistant Brands-bejegyzés;
-- legalább a repositoryba csomagolt `brand/icon.png` arculati elem;
+- a custom integration saját `brand/icon.png` és `brand/icon.svg` arculati
+  elemei;
 - teljes GitHub Release, nem csak címke.
+
+2026.3 óta a Home Assistant Brands repository nem fogad új
+`custom_integrations` bejegyzéseket: az arculati elemek közvetlenül a custom
+componentben adhatók meg. A Brands repository ezt külön automatizmussal
+ellenőrzi és az új custom-integration ikon-PR-eket lezárja, ezért ehhez a
+projekthez nem készül külön Brands PR.
 
 ## Tervezett GitHub-metaadatok
 
 - repository: `zsaklak/slimmelezer-demasz`;
 - leírás: `Home Assistant és ESPHome támogatás volt Démász területi MVM Sagem MA309M okosmérőkhöz`;
 - témakörök: `home-assistant`, `hacs`, `esphome`, `dsmr`, `p1-meter`, `obis`, `mvm`, `demasz`, `hungary`, `sagem`, `ma309m`;
-- első kiadás: `v1.0.0`.
+- első nyilvános kiadás: `v1.0.1`.
 
 ## Emberi kapuk
 
@@ -42,12 +48,12 @@ Az automatikus GitHub-küldés nem HACS-telepítési feltétel és alapértelmez
 2. A GitHub repository létrehozása és a `main` ág publikálása. **Teljesítve.**
 3. A GitHub Actions első sikeres futása. **Teljesítve.**
 4. Kézi telepítés egy teszt Home Assistant-példányra. **Teljesítve.**
-5. Legalább 24 órás élő próba.
-6. Home Assistant Brands-bejegyzés.
-7. `v1.0.0` GitHub Release.
+5. Legalább 24 órás élő próba. **Teljesítve: 86411 másodperc, 1432/1432 hibamentes minta.**
+6. Custom-integration brand ikon. **Teljesítve; külön Brands PR már nem fogadott.**
+7. `v1.0.1` GitHub Release.
 8. Először HACS egyedi repositoryként végzett telepítési próba.
 9. Csak ezután PR a HACS alapértelmezett repository-listájába.
 
-A lokális forráskód, tesztek, dokumentáció és CI-konfiguráció elkészült. A
-repository publikálása után a GitHub Actions eredménye, a 24 órás élő próba,
-a Brands-bejegyzés, a kiadás és a HACS-beadás külön ellenőrzési lépés.
+A forráskód, tesztek, dokumentáció, CI-konfiguráció, kézi telepítés és a
+24 órás élő próba elkészült. A kiadás, az egyedi repository-próba és a
+HACS-alaplista PR külön, külső visszaolvasással ellenőrzött lépés.

@@ -117,8 +117,9 @@ Eredmény: SIKERES
 - Helyi hassfest: sikeres.
 - A nyilvános repository első javított GitHub-futásában a Python/Home
   Assistant, ESPHome, hassfest és HACS feladat is sikeres.
-- Home Assistant Brands-bejegyzés: még nincs.
-- GitHub Release: még nincs.
+- Custom-integration brand ikon: a komponensben megtalálható; a Home Assistant
+  Brands repository 2026.3 óta nem fogad új custom-integration ikon-PR-t.
+- GitHub Release: a sikeres 24 órás próba után `v1.0.1` verzióval készül.
 
 ## Elsődleges Home Assistant előkészített telepítés
 
@@ -137,18 +138,24 @@ Eredmény: SIKERES
 - A később felvett `slimmelezer_demasz` config entry állapota `loaded`;
   36/36 engedélyezett entitása elérhető.
 
-## Még jóváhagyáshoz kötött
+## 1.0.1 24 órás elfogadási próba
 
-- nyílt forráskódú licenc kiválasztása;
-- nyilvános GitHub repository létrehozása és feltöltése;
-- ESPHome OTA-telepítés;
-- 24 órás élő elfogadási próba;
-- Brands-bejegyzés és HACS-beadás.
+A Zsáklak Home Assistant rendszeren futó 1.0.1 változat külső, percenkénti
+próbája 2026-08-14 19:39:00 CEST és 2026-08-15 19:39:11 CEST között sikeresen
+lefutott.
 
-A célrendszerre a forrásfájlok felkerültek, a korábban jóváhagyott
-Core-újraindítás aktiválta az új kódot, majd a config flow beállítása és az
-élő entitásellenőrzés is megtörtént. A felsorolt fennmaradó, jóváhagyáshoz
-kötött műveletek nem történtek meg.
+- időtartam: 86411 másodperc;
+- minták: 1432;
+- hibás minta, API-hiba, metaadathiba és forráshiba: 0;
+- legnagyobb mintaköz: 81,875 másodperc;
+- legnagyobb nettóteljesítmény-képleteltérés: 0,000237 W;
+- automatikus Core-helyreállítás és új OBIS-entitás: 0;
+- lezáráskori állapot: `loaded`, 38/38 elérhető entitás, élő Recorder-metaadat;
+- eredmény: elfogadva.
+
+A próbacsomag nem tartalmaz nyers telegramot vagy mérési értéket. A külső
+timer a lezáráskor leállt, a teszttoken eltávolításra került, és Home
+Assistant-újraindítás nem történt.
 
 ## Zsáklak történeti entitás- és statisztika-migráció
 
