@@ -112,7 +112,10 @@ Részletes leírás: [Home Assistant-telepítés](docs/HOME_ASSISTANT_TELEPITES.
 
 ### HACS
 
-A HACS-telepítés csak az első nyilvános kiadás és a HACS-validáció sikeres lefutása után támogatott. Az előkészítés és a beadási feltételek a [HACS-dokumentációban](docs/HACS.md) olvashatók.
+A HACS csak a Home Assistant-integrációt telepíti; az ESPHome YAML-t külön kell
+alkalmazni a fenti indoklás szerint. A HACS-validáció és a 24 órás élő próba
+sikeres. A kiadási és beadási állapot a
+[HACS-dokumentációban](docs/HACS.md) követhető.
 
 ## Automatikus OBIS-figyelés
 
@@ -179,5 +182,5 @@ Az ellenőrzőprogram nem írja ki a mérési értékeket vagy mérőazonosító
 ## Állapot
 
 A projekt az [MIT licenc](LICENSE) feltételeivel használható. A HACS
-alapértelmezett tárolói közé még nem került be; a kiadás és a HACS-beadás
-ellenőrzött, külön lépések.
+alapértelmezett tárolói közé még nem került be; a `v1.0.1` kiadás, az egyedi
+repository-próba és a HACS-beadás ellenőrzött, külön lépések.
