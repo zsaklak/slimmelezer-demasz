@@ -230,3 +230,25 @@ metaadatát nem töröltük. A javítás újraindítás nélkül történt.
 
 A módosítás előtt helyi visszaállítási pont készült; annak belső útvonala és
 ujjlenyomata szándékosan nem része a nyilvános csomagnak.
+
+## HACS egyedi repository telepítési próba
+
+2026-08-15-én a Zsáklak Home Assistant HACS 2.0.5 példánya egyedi
+repositoryként felvette a `zsaklak/slimmelezer-demasz` tárolót. A HACS a
+`slimmelezer_demasz` domaint, a `HU` országot és a `v1.0.1` kiadást helyesen
+felismerte, majd a kiadást sikeresen telepítette.
+
+- HACS-állapot: telepítve, telepített és elérhető verzió `v1.0.1`;
+- a telepített 14/14 komponensfájl SHA-256 értéke egyezik a kiadással;
+- config entry: `loaded`;
+- integrációs entitások: 38/38 elérhető;
+- a kiválasztott nettó szenzor metaadata: `W`, `power`, `measurement`;
+- a mértékegységre normalizált `import − export` képlet eltérése
+  0,000053 W;
+- Recorder-metaadat: élő, átlagképes, `W` egységű;
+- a vizsgált naplórészben SlimmeLezer/DSMR hiba nem jelent meg.
+
+A művelet előtt Supervisor-részmentés és külön fájlszintű visszaállítási pont
+készült. A telepített kód megegyezett a már futó `v1.0.1` változattal, ezért a
+próba Home Assistant-újraindítás nélkül történt. A hivatalos HACS-alaplistára
+beadott kérelem: [hacs/default#10011](https://github.com/hacs/default/pull/10011).
